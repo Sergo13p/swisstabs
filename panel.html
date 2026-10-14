@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TabsBook — панель закладок</title>
+  <link rel="stylesheet" href="panel.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-head">
+        <span class="sidebar-title">Закладки Chrome</span>
+        <button id="sidebar-toggle" class="icon-btn" title="Свернуть боковую панель">‹</button>
+      </div>
+      <nav id="tree" class="tree" aria-label="Дерево закладок"></nav>
+    </aside>
+
+    <div class="content">
+      <header class="topbar">
+        <div class="brand">
+          <span class="logo" aria-hidden="true"></span>
+          <span class="brand-name">TabsBook</span>
+        </div>
+
+        <div class="actions">
+          <button id="thumbs-btn" class="btn ghost" title="Превью страниц">👁 Превью</button>
+          <button id="sync-btn" class="btn ghost" title="Синхронизировать с Google Drive">
+            <span class="sync-dot" id="sync-dot"></span>
+            <span id="sync-text">Синхронизация</span>
+          </button>
+          <button id="add-btn" class="btn primary" title="Добавить закладку (N)">+ Добавить</button>
+        </div>
+      </header>
+
+      <!-- Поиск в интернете (Google / ИИ) -->
+      <section class="websearch">
+        <form id="web-search-form" class="websearch-box" autocomplete="off">
+          <span class="ws-icon" aria-hidden="true">🔍</span>
+          <input id="web-search" type="text" placeholder="Поиск в интернете…  (G)" autofocus spellcheck="false">
+          <div class="ws-tools">
+            <div class="engine-toggle" role="group" aria-label="Поисковая система">
+              <button type="button" class="engine-btn active" data-engine="google">Google</button>
+              <button type="button" class="engine-btn" data-engine="ai">✨ ИИ</button>
+            </div>
+            <select id="ai-provider" class="ai-provider" title="ИИ-сервис" hidden>
+              <option value="google-ai">Google AI</option>
+              <option value="perplexity">Perplexity</option>
+              <option value="chatgpt">ChatGPT</option>
+              <option value="claude">Claude</option>
+            </select>
+          </div>
+        </form>
+      </section>
+
+      <!-- Поиск по закладкам панели -->
+      <div class="filter-row">
+        <span class="filter-icon" aria-hidden="true">🔎</span>
+        <input id="search" type="search" placeholder="Поиск по закладкам…  (/)" spellcheck="false">
+      </div>
+
+      <div id="setup-hint" class="hint" hidden>
+        Синхронизация с Google пока не настроена — это <b>не сбой</b>: укажите OAuth client_id
+        в <code>manifest.json</code> (пошагово в README.md), либо напишите мне — переключу
+        синхронизацию на аккаунт Chrome без всякой настройки.
+      </div>
+
+      <div id="thumbs-hint" class="hint" hidden></div>
+
+      <main>
+        <div id="folder-bar" class="folder-bar" hidden>
+          <nav id="breadcrumbs" class="breadcrumbs" aria-label="Путь к папке"></nav>
+          <button id="folder-close" class="icon-btn" title="Показать все плитки">✕</button>
+        </div>
+
+        <div id="grid" class="grid"></div>
+        <div id="empty" class="empty" hidden>
+          <p>Пока нет закладок</p>
+          <button id="empty-add" class="btn primary">+ Добавить первую</button>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <dialog id="edit-dialog">
+    <form method="dialog" id="edit-form">
+      <h2 id="dialog-title">Новая закладка</h2>
+
+      <label>
+        Название
+        <input id="f-title" type="text" placeholder="Мой сайт" autocomplete="off">
+      </label>
+
+      <label>
+        Адрес *
+        <input id="f-url" type="text" placeholder="example.com" required autocomplete="off" spellcheck="false">
+      </label>
+
+      <div class="dialog-buttons">
+        <button type="button" id="delete-btn" class="btn danger" hidden>Удалить</button>
+        <span class="spacer"></span>
+        <button type="button" id="cancel-btn" class="btn ghost">Отмена</button>
+        <button type="submit" class="btn primary">Сохранить</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <script type="module" src="panel.js"></script>
+</body>
+</html>

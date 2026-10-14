@@ -1,0 +1,43 @@
+{
+  "manifest_version": 3,
+  "name": "TabsBook Lite — панель закладок",
+  "version": "1.0.0",
+  "description": "Панель быстрого доступа к закладкам с синхронизацией через Google Drive.",
+  "minimum_chrome_version": "116",
+  "chrome_url_overrides": {
+    "newtab": "panel.html"
+  },
+  "action": {
+    "default_title": "Открыть панель закладок"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "permissions": [
+    "bookmarks",
+    "storage",
+    "identity",
+    "alarms",
+    "contextMenus",
+    "tabs",
+    "favicon",
+    "offscreen",
+    "unlimitedStorage"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "oauth2": {
+    "client_id": "YOUR_CLIENT_ID.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/drive.appdata"
+    ]
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

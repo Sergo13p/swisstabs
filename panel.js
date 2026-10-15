@@ -601,7 +601,7 @@ async function refreshThumbsBtn() {
   if (!thumbsOn) {
     lines.push(
       'Превью выключены: клик — включить. Если Chrome откажет — chrome://extensions → ' +
-        'TabsBook → Подробности → Доступ к сайтам → «Разрешить на всех сайтах»'
+        'SwissTabs → Подробности → Доступ к сайтам → «Разрешить на всех сайтах»'
     );
   } else {
     lines.push(
@@ -665,11 +665,11 @@ thumbsBtn.addEventListener('click', async () => {
     if (granted) {
       showToast('Превью включены — скриншоты будут собираться при посещении сайтов');
     } else if (err) {
-      console.error('[TabsBook] permissions.request:', err);
+      console.error('[SwissTabs] permissions.request:', err);
       showToast('Chrome отклонил разрешение: ' + err);
     } else {
       showToast(
-        'Разрешение не выдано. Включите его: chrome://extensions → TabsBook → Подробности → Доступ к сайтам → «Разрешить на всех сайтах»'
+        'Разрешение не выдано. Включите его: chrome://extensions → SwissTabs → Подробности → Доступ к сайтам → «Разрешить на всех сайтах»'
       );
     }
   }
@@ -922,7 +922,7 @@ async function refreshTree(expandDefaults = false) {
     const [root] = await chrome.bookmarks.getTree();
     treeRoot = root || null;
   } catch (e) {
-    console.warn('[TabsBook] tree:', e);
+    console.warn('[SwissTabs] tree:', e);
     treeRoot = null;
   }
   indexTree(treeRoot);

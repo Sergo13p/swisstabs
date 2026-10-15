@@ -15,7 +15,7 @@ function scheduleAlarms() {
 async function doSync() {
   if (!isConfigured()) return;
   const res = await syncNow({ interactive: false });
-  if (!res.ok && res.reason !== 'not-configured') console.warn('[TabsBook] sync:', res.error);
+  if (!res.ok && res.reason !== 'not-configured') console.warn('[SwissTabs] sync:', res.error);
 }
 
 function syncSoon() {
@@ -34,7 +34,7 @@ chrome.runtime.onInstalled.addListener(async () => {
     const state = await loadState();
     await seedFromBookmarks(state);
   } catch (e) {
-    console.warn('[TabsBook] seed:', e);
+    console.warn('[SwissTabs] seed:', e);
   }
   syncSoon();
 
@@ -69,7 +69,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     }
     syncSoon();
   } catch (e) {
-    console.warn('[TabsBook] context menu:', e);
+    console.warn('[SwissTabs] context menu:', e);
   }
 });
 
@@ -110,7 +110,7 @@ function scheduleCapture(tab, delay = 1500) {
     tab.windowId,
     setTimeout(() => {
       captureTimers.delete(tab.windowId);
-      captureTab(tab.windowId, tab.id).catch((e) => console.warn('[TabsBook] capture:', e));
+      captureTab(tab.windowId, tab.id).catch((e) => console.warn('[SwissTabs] capture:', e));
     }, delay)
   );
 }
@@ -166,7 +166,7 @@ async function makeThumb(src) {
     const res = await chrome.runtime.sendMessage({ type: 'make-thumb', src, maxWidth: 480, quality: 0.62 });
     return res && res.ok ? res.dataUrl : null;
   } catch (e) {
-    console.warn('[TabsBook] makeThumb:', e && e.message ? e.message : e);
+    console.warn('[SwissTabs] makeThumb:', e && e.message ? e.message : e);
     return null;
   }
 }

@@ -8,25 +8,29 @@
 #
 # ВАЖНО: ключ НЕ должен лежать внутри папки расширения — Chrome запрещает
 # загружать такие расширения («это неприемлемо»). Скрипт хранит его в
-# ~/.config/tabsbook/key.pem. Не удаляйте этот файл и не меняйте поле key —
+# ~/.config/swisstabs/key.pem. Не удаляйте этот файл и не меняйте поле key —
 # иначе ID изменится и синхронизация с Google потребует нового client_id.
 set -euo pipefail
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-KEY_DIR="${HOME}/.config/tabsbook"
+KEY_DIR="${HOME}/.config/swisstabs"
 KEY_FILE="$KEY_DIR/key.pem"
 
 mkdir -p "$KEY_DIR"
 if [[ ! -f "$KEY_FILE" ]]; then
-  if [[ -f "${HOME}/tabsbook-key.pem" ]]; then
-    mv "${HOME}/tabsbook-key.pem" "$KEY_FILE"
-    echo "Перенесён существующий ключ: ~/tabsbook-key.pem → $KEY_FILE"
-  else
-    openssl genrsa -out "$KEY_FILE" 2>/dev/null
-    echo "Сгенерирован новый ключ: $KEY_FILE"
-  fi
-  chmod 600 "$KEY_FILE"
+  for OLD in "${HOME}/tabsbook-key.pem" "${HOME}/.config/tabsbook/key.pem"; do
+    if [[ -f "$OLD" ]]; then
+      mv "$OLD" "$KEY_FILE"
+      echo "Перенесён существующий ключ: $OLD → $KEY_FILE"
+      break
+    fi
+  done
 fi
+if [[ ! -f "$KEY_FILE" ]]; then
+  openssl genrsa -out "$KEY_FILE" 2>/dev/null
+  echo "Сгенерирован новый ключ: $KEY_FILE"
+fi
+chmod 600 "$KEY_FILE"
 
 PUB_KEY="$(openssl rsa -in "$KEY_FILE" -pubout -outform DER 2>/dev/null | openssl base64 -A)"
 EXT_ID="$(printf '%s' "$PUB_KEY" | python3 -c "

@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "TabsBook Lite — панель закладок",
+  "name": "SwissTabs — панель закладок",
   "version": "1.0.0",
   "description": "Панель быстрого доступа к закладкам с синхронизацией через Google Drive.",
   "minimum_chrome_version": "116",
